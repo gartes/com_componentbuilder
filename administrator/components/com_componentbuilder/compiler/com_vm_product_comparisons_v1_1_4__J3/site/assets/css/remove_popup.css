@@ -1,0 +1,110 @@
+.svg-yellow {
+    fill: #ffa800;
+}
+.svg-red {
+    fill: #cf2429;
+}
+.svg-icon {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+.popup-content {
+    position: absolute;
+    left: 7px;
+    right: 7px;
+    min-width: 306px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #eaeaea;
+    border-bottom: 3px solid #ccc;
+    border-radius: 2px;
+    z-index: 50;
+    overflow: hidden;
+}
+@media (min-device-width: 414px){
+    .g-remove-popup{
+        width: 400px;
+        margin: 0 auto; 
+    }
+}
+.g-remove-tools {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    border-bottom: 1px solid #eaeaea;
+}
+.g-remove-tools-i {
+    position: relative;
+    display: table-cell;
+    width: 50%;
+    padding: 58px 15px 17px;
+    font-size: 0.776923em;
+    line-height: 1.2142857143em;
+    text-align: center;
+    vertical-align: top;
+}
+a:link, a:visited {
+    color: #3e77aa;
+}
+.g-remove-tools-i:first-child {
+    border-right: 1px solid #eaeaea;
+}
+.g-remove-tools .cross-icon,
+.g-remove-tools .wishlists-full-icon,
+.g-remove-tools .wishlists-icon {
+    position: absolute;
+    display: block;
+    content: "";
+    top: 19px;
+    left: 50%;
+    margin-left: -18px;
+    width: 36px;
+    height: 36px;
+}
+.g-remove-tools .cross-icon {
+    top: 24px;
+    width: 30px;
+    height: 28px;
+}
+.g-remove-cancel {
+    display: block;
+    padding: 13px;
+    font-size: 1.076923em;
+    line-height: 1.2142857143em;
+    text-align: center;
+}
+
+.comparison-list-empty-b {
+    padding: 65px 0;
+    margin-bottom: 16px;
+    text-align: center;
+    border-bottom: 2px solid #eaeaea;
+}
+.comparison-list-empty-b-title {
+    display: block;
+    margin: 0 0 13px -11px;
+    font-size: 1.7692307692em;
+    color: #999;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,9 @@
+/**
+ * @package    Joomla.Component.Builder
+ *
+ * @created    ###CREATIONDATE###
+ * @author     ###AUTHOR### <###AUTHORWEBSITE###>
+ * @github     Joomla Component Builder <https://github.com/vdm-io/Joomla-Component-Builder>
+ * @copyright  ###COPYRIGHT###
+ * @license    ###LICENSE###
+ */

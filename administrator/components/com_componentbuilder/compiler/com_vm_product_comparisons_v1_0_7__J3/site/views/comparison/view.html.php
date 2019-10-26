@@ -1,0 +1,949 @@
+<?php
+/*----------------------------------------------------------------------------------|  www.vdm.io  |----/
+				Gstes Co. 
+/-------------------------------------------------------------------------------------------------------/
+
+	@version		1.0.7
+	@build			23rd октября, 2019
+	@created		23rd сентября, 2019
+	@package		vm_product_comparisons
+	@subpackage		view.html.php
+	@author			Nikolaychuk Oleg <http://nobd.ml>	
+	@copyright		Copyright (C) 2015. All Rights Reserved
+	@license		GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
+  ____  _____  _____  __  __  __      __       ___  _____  __  __  ____  _____  _  _  ____  _  _  ____ 
+ (_  _)(  _  )(  _  )(  \/  )(  )    /__\     / __)(  _  )(  \/  )(  _ \(  _  )( \( )( ___)( \( )(_  _)
+.-_)(   )(_)(  )(_)(  )    (  )(__  /(__)\   ( (__  )(_)(  )    (  )___/ )(_)(  )  (  )__)  )  (   )(  
+\____) (_____)(_____)(_/\/\_)(____)(__)(__)   \___)(_____)(_/\/\_)(__)  (_____)(_)\_)(____)(_)\_) (__) 
+
+/------------------------------------------------------------------------------------------------------*/
+
+// No direct access to this file
+defined('_JEXEC') or die('Restricted access');
+
+/**
+ * Vm_product_comparisons View class for the Comparison
+ */
+class Vm_product_comparisonsViewComparison extends JViewLegacy
+{
+	// Overwriting JView display method
+	function display($tpl = null)
+	{		
+		// get combined params of both component and menu
+		$this->app = JFactory::getApplication();
+		$this->params = $this->app->getParams();
+		$this->menu = $this->app->getMenu()->getActive();
+		// get the user object
+		$this->user = JFactory::getUser();
+		// Initialise variables.
+		$this->items = $this->get('Items');
+		
+		/***[JCBGUI.site_view.php_jview_display.28.$$$$]***/
+				
+		# Site View
+				# PHP TAB
+				# Add PHP (custom JViewLegacy display) * / Произвольный Script (JViewLegacy display)
+				 
+				JLoader::register( 'Joomla\CMS\Environment\Browser' , JPATH_LIBRARIES . '/src/Environment/Browser.php' );
+				$UserAgent = Joomla\CMS\Environment\Browser::getInstance();
+				$isMobile  = $UserAgent->isMobile();
+				if( $isMobile )
+				{
+					$tpl = 'mobile';
+					 
+				}#END IF
+				
+				if( !$this->items['allProductCount'] )
+				{
+					$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId ();
+					$catURL =  JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id , FALSE);
+					$this->app->redirect( $catURL );
+				}#END IF
+				 /***[/JCBGUI$$$$]***/
+		
+
+		// Set the toolbar
+		$this->addToolBar();
+
+		// set the document
+		$this->_prepareDocument();
+
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			throw new Exception(implode("\n", $errors), 500);
+		}
+
+		parent::display($tpl);
+	}
+
+
+/***[JCBGUI.site_view.php_jview.28.$$$$]***/
+# Site View
+# PHP TAB
+# Add PHP (custom JViewLegacy methods) * / Произвольный метод (JViewLegacy) view.html.php
+
+
+/***[/JCBGUI$$$$]***/
+
+
+	/**
+	 * Prepares the document
+	 */
+	protected function _prepareDocument()
+	{
+
+		// always make sure jquery is loaded.
+		JHtml::_('jquery.framework');
+		// Load the header checker class.
+		require_once( JPATH_COMPONENT_SITE.'/helpers/headercheck.php' );
+		// Initialize the header checker.
+		$HeaderCheck = new vm_product_comparisonsHeaderCheck;
+		
+		/***[JCBGUI.site_view.php_document.28.$$$$]***/
+		# Site View
+		# PHP TAB
+		# Add PHP (custom document script) * / PHP document method
+		
+		/***[/JCBGUI$$$$]***/
+		
+		// add the document default css file
+		$this->document->addStyleSheet(JURI::root(true) .'/components/com_vm_product_comparisons/assets/css/comparison.css', (Vm_product_comparisonsHelper::jVersion()->isCompatible('3.8.0')) ? array('version' => 'auto') : 'text/css');
+		// Set the Custom CSS script to view
+		$this->document->addStyleDeclaration("
+			.catName h2{
+			    margin-top: 0!important;
+			    margin-bottom: 10px;
+			    font-size: 26px;
+			    font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+			    font-weight: 500;
+			    line-height: 1.1;
+			    color: inherit;
+			}
+			.sprite, .sprite-both:after, .sprite-both:before, .sprite-side:before {
+			    background-image: url(https://i.rozetka.ua/h.13e123/sprite.svg)!important;
+			    background-repeat: no-repeat;
+			}
+			.browse-view.product_comparisons{
+			    min-height: 430xp;
+			}
+			
+			
+			.btn-link {  
+			    display: inline-block;
+			    position: relative;
+			    border: 0;
+			    outline: 0;
+			    border-radius: 4px;
+			    vertical-align: middle;
+			    background-clip: padding-box;
+			    cursor: pointer;
+			}
+			.btn-link-gray {
+			    background: #f5f5f5;
+			    border: 1px solid #ebebeb;
+			}
+			.btn-link-i {
+			    display: inline-block;
+			    position: relative;
+			    border: 0;
+			    outline: 0;
+			    color: #4d4b4b;
+			    text-align: center;
+			    text-decoration: none;
+			    white-space: nowrap;
+			    background: 0 0;
+			    cursor: pointer;
+			    z-index: 1;
+			}
+			.btn-link-gray .btn-link-i {
+			    color: #3e77aa;
+			}
+			.btn-link-gray:hover .btn-link-i {
+			    color: #4096e3;
+			}
+			.comparison-title {
+			    margin: 0 300px 16px 200px
+			}
+			.comparison-title-text {
+			    display: inline;
+			    padding-right: 130px;
+			    vertical-align: top
+			}
+			@media screen and (max-width: 1400px) {
+			    .comparison-title-text {
+			        font-size: 2rem
+			    }
+			}
+			.comparison-title-text-i {
+			    text-transform: lowercase
+			}
+			.comparison-list-clear {
+			    display: inline-block;
+			    padding: 3px 11px;
+			    margin: 15px 0 0 -119px;
+			    border: 1px solid #ffb2a9;
+			    border-radius: 13px;
+			    font-size: .8125rem;
+			    line-height: 18px;
+			    vertical-align: top
+			}
+			@media screen and (max-width: 1400px) {
+			    .comparison-list-clear {
+			        margin-top: 8px
+			    }
+			}
+			
+			.comparison-t-container {
+			    display: inline-block;
+			    position: relative;
+			    margin: -16px 0 -4px;
+			    text-align: left
+			}
+			
+			.comparison-t-head-wrap {
+			    position: absolute;
+			    background: #fff;
+			    box-shadow: 0 10px 11px -11px rgba(51, 51, 51, 0);
+			    -webkit-transition: box-shadow .2s ease, height .4s ease;
+			    -moz-transition: box-shadow .2s ease, height .4s ease;
+			    -ms-transition: box-shadow .2s ease, height .4s ease;
+			    -o-transition: box-shadow .2s ease, height .4s ease;
+			    transition: box-shadow .2s ease, height .4s ease;
+			    overflow: hidden;
+			    z-index: 1
+			}
+			
+			.comparison-t-head-wrap:before {
+			    position: absolute;
+			    content: '';
+			    right: 0;
+			    bottom: 0;
+			    left: 295px;
+			    height: 9px;
+			    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), #fff 100%, #fff 10%, #fff);
+			    background: -ms-linear-gradient(top, rgba(255, 255, 255, 0), #fff 100%, #fff 10%, #fff);
+			    background: -moz-linear-gradient(top, rgba(255, 255, 255, 0), #fff 100%, #fff 10%, #fff);
+			    background: linear-gradient(\"to bottom\", rgba(255, 255, 255, 0), #fff 100%, #fff 10%, #fff);
+			    z-index: 1
+			}
+			
+			@media screen and (max-width: 1300px) {
+			    .comparison-t-head-wrap:before {
+			        left: 283px
+			    }
+			}
+			
+			.comparison-t-head-compact {
+			    box-shadow: 0 10px 11px -11px rgba(51, 51, 51, .6)
+			}
+			
+			.comparison-t-head-compact .g-i-status-wrap, .comparison-t-head-compact .g-rating-wrap {
+			    display: none
+			}
+			
+			.comparison-t-head-clone {
+			    -webkit-transition: height .4s ease;
+			    -moz-transition: height .4s ease;
+			    -ms-transition: height .4s ease;
+			    -o-transition: height .4s ease;
+			    transition: height .4s ease
+			}
+			
+			.comparison-t, .comparison-t-head {
+			    display: table;
+			    table-layout: fixed
+			}
+			
+			.comparison-t-head-row, .comparison-t-row {
+			    display: table-row
+			}
+			
+			.comparison-t-cell, .comparison-t-cell-empty, .comparison-t-cell-first, .comparison-t-head-cell, .comparison-t-head-cell-empty, .comparison-t-head-cell-first {
+			    display: table-cell
+			}
+			
+			.comparison-t-row:hover {
+			    background-color: #fffbe3
+			}
+			
+			.comparison-t-cell, .comparison-t-head-cell {
+			    width: 209px;
+			    min-width: 209px;
+			    -webkit-box-sizing: border-box;
+			    box-sizing: border-box
+			}
+			
+			.comparison-t-head-cell {
+			    position: relative;
+			    padding: 35px 10px 10px 15px
+			}
+			
+			.comparison-t-head-cell .g-i-lable-out_of_stock {
+			    top: -7px;
+			    left: 85px
+			}
+			
+			.comparison-t-head-cell .g-price {
+			    padding: 5px 5px 4px;
+			    margin: 0 3px 6px 0
+			}
+			
+			.comparison-t-head-cell .g-price-uah {
+			    font-size: 1rem
+			}
+			
+			.comparison-t-head-cell .g-tools {
+			    margin: 0 0 6px
+			}
+			
+			.comparison-t-head-cell .g-wishlist {
+			    padding: 5px 8px 4px
+			}
+			
+			.comparison-t-head-cell .g-rating {
+			    margin: 0
+			}
+			
+			.comparison-t-head-cell .g-id-wrap .g-id {
+			    margin: 0 0 5px
+			}
+			
+			.comparison-t-cell {
+			    padding: 10px 10px 10px 15px
+			}
+			
+			.comparison-t-cell-first, .comparison-t-head-cell-first, .comparison-t-section {
+			    width: 295px;
+			    min-width: 295px;
+			    -webkit-box-sizing: border-box;
+			    box-sizing: border-box;
+			    font-size: .875rem;
+			    line-height: 1.25rem
+			}
+			
+			@media screen and (max-width: 1300px) {
+			    .comparison-t-cell-first, .comparison-t-head-cell-first, .comparison-t-section {
+			        width: 283px;
+			        min-width: 283px;
+			        font-size: .8125rem;
+			        line-height: 1.125rem
+			    }
+			}
+			
+			.comparison-t-head-cell-first {
+			    padding: 35px 10px 50px 10px
+			}
+			
+			.comparison-t-head-cell-first .m-tabs {
+			    position: absolute;
+			    left: 10px;
+			    bottom: 0
+			}
+			
+			.comparison-t-head-cell-first .m-tabs-link {
+			    padding: 9px 10px;
+			    font-size: .875rem;
+			    line-height: 17px
+			}
+			
+			@media screen and (max-width: 1300px) {
+			    .comparison-t-head-cell-first .m-tabs-link {
+			        font-size: .8125rem
+			    }
+			}
+			
+			.comparison-t-head-cell-first .comparison-g-img {
+			    opacity: .2
+			}
+			
+			.comparison-t-cell-first {
+			    padding: 10px;
+			    border-right: 1px solid #eaeaea
+			}
+			
+			.comparison-t-cell-first .glossary-icon {
+			    margin: 0 0 0 5px
+			}
+			
+			.comparison-t-section {
+			    display: table-cell;
+			    padding: 12px 10px;
+			    border-right: 1px solid #eaeaea;
+			    background: #fafafa;
+			    font-weight: 700
+			}
+			
+			.comparison-g-top-b {
+			    display: inline-block;
+			    margin-bottom: 7px
+			}
+			
+			.comparison-g-img {
+			    float: left;
+			    width: 50px;
+			    text-align: center
+			}
+			
+			.comparison-g-title {
+			    display: block;
+			    margin: -1px 10px 0 57px;
+			    font-size: .8125rem;
+			    line-height: 15px;
+			    word-break: break-word
+			}
+			
+			.comparison-g-link {
+			    display: inline-block
+			}
+			
+			.comparison-g-link:hover .comparison-g-title {
+			    text-decoration: underline
+			}
+			
+			.comparison-g-delete {
+			    position: absolute;
+			    top: 9px;
+			    right: 4px
+			}
+			
+			.comparison-g-delete-icon {
+			    background-position: -532px -878px;
+			    width: 20px;
+			    height: 20px
+			}
+			
+			.comparison-g-delete-icon:hover {
+			    background-position: -510px -878px;
+			    width: 20px;
+			    height: 20px
+			}
+			
+			.comparison-g-buy-small-btn .g-cart {
+			    top: 0;
+			    left: 0
+			}
+			
+			.comparison-g-buy-small-btn .g-cart:not(.g-cart-added):before {
+			    top: 5px;
+			    left: 7px
+			}
+			
+			.comparison-g-buy-small-btn .g-cart:not(.g-cart-added) .btn-link-i {
+			    padding: 8px 19px 9px
+			}
+			
+			.comparison-g-buy-small-btn .g-cart-added:before {
+			    background-position: -306px -714px;
+			    width: 27px;
+			    height: 25px;
+			    top: 2px;
+			    left: 7px
+			}
+			
+			.comparison-g-buy-small-btn .g-cart-added .btn-link-i {
+			    padding: 9px 19px 10px
+			}
+			
+			.comparison-t-head-compact .comparison-g-img {
+			    height: 50px
+			}
+			
+			.comparison-2-goods .comparison-t, .comparison-2-goods .comparison-t-head {
+			    width: 100%
+			}
+			
+			@media screen and (max-width: 1614px) {
+			    .comparison-2-goods .comparison-t-container {
+			        width: 100%
+			    }
+			}
+			
+			@media screen and (min-width: 1615px) {
+			    .comparison-2-goods .comparison-t-container {
+			        width: 1520px
+			    }
+			}
+			
+			@media screen and (max-width: 1090px) {
+			    .comparison-2-goods .comparison-t-cell, .comparison-2-goods .comparison-t-head-cell {
+			        width: 50%
+			    }
+			}
+			
+			@media screen and (min-width: 1091px) {
+			    .comparison-2-goods .comparison-t-cell, .comparison-2-goods .comparison-t-head-cell {
+			        width: 382px
+			    }
+			}
+			
+			@media not all and (min-resolution: 0.001dpcm) {
+			    .comparison-2-goods .comparison-t-cell, .comparison-2-goods .comparison-t-head-cell {
+			        width: 382px
+			    }
+			}
+			
+			.comparison-3-goods .comparison-t, .comparison-3-goods .comparison-t-head {
+			    width: 100%
+			}
+			
+			@media screen and (max-width: 1614px) {
+			    .comparison-3-goods .comparison-t-container {
+			        width: 100%
+			    }
+			}
+			
+			@media screen and (min-width: 1615px) {
+			    .comparison-3-goods .comparison-t-container {
+			        width: 1520px
+			    }
+			}
+			
+			@media screen and (max-width: 1535px) {
+			    .comparison-3-goods .comparison-t-cell, .comparison-3-goods .comparison-t-head-cell {
+			        width: 33%
+			    }
+			}
+			
+			@media screen and (min-width: 1536px) {
+			    .comparison-3-goods .comparison-t-cell, .comparison-3-goods .comparison-t-head-cell {
+			        width: 382px
+			    }
+			}
+			
+			@media not all and (min-resolution: 0.001dpcm) {
+			    .comparison-3-goods .comparison-t-cell, .comparison-3-goods .comparison-t-head-cell {
+			        width: 382px
+			    }
+			}
+			
+			@media screen and (max-width: 1614px) {
+			    .comparison-4-goods .comparison-t-container {
+			        width: 100%
+			    }
+			}
+			
+			@media screen and (min-width: 1615px) {
+			    .comparison-4-goods .comparison-t-container {
+			        width: 1520px
+			    }
+			}
+			
+			@media screen and (min-width: 1165px) {
+			    .comparison-4-goods .comparison-t, .comparison-4-goods .comparison-t-head {
+			        width: 100%
+			    }
+			
+			    .comparison-4-goods .comparison-t-cell, .comparison-4-goods .comparison-t-head-cell {
+			        width: -webkit-calc((100% - 295px) / 4);
+			        width: -moz-calc((100% - 295px) / 4);
+			        width: -o-calc((100% - 295px) / 4);
+			        width: calc((100% - 295px) / 4)
+			    }
+			
+			    .comparison-4-goods .comparison-t-cell, .comparison-4-goods .comparison-t-head-cell, .comparison-4-goods _::-webkit-:not(:root:root) {
+			        width: 209px
+			    }
+			}
+			
+			@media not all and (min-resolution: 0.001dpcm) {
+			    .comparison-4-goods .comparison-t-cell, .comparison-4-goods .comparison-t-head-cell {
+			        width: 209px
+			    }
+			}
+			
+			@media screen and (min-width: 1436px) and (max-width: 1920px) {
+			    .comparison-5-goods .comparison-t-container {
+			        width: 100%
+			    }
+			}
+			
+			@media screen and (min-width: 1921px) {
+			    .comparison-5-goods .comparison-t-container {
+			        width: 1825px
+			    }
+			}
+			
+			@media screen and (min-width: 1436px) {
+			    .comparison-5-goods .comparison-t, .comparison-5-goods .comparison-t-head {
+			        width: 100%
+			    }
+			
+			    .comparison-5-goods .comparison-t-cell, .comparison-5-goods .comparison-t-head-cell {
+			        width: -webkit-calc((100% - 295px) / 5);
+			        width: -moz-calc((100% - 295px) / 5);
+			        width: -o-calc((100% - 295px) / 5);
+			        width: calc((100% - 295px) / 5)
+			    }
+			
+			    .comparison-5-goods .comparison-t-cell, .comparison-5-goods .comparison-t-head-cell, .comparison-5-goods _::-webkit-:not(:root:root) {
+			        width: 209px
+			    }
+			}
+			
+			@media not all and (min-resolution: 0.001dpcm) {
+			    .comparison-5-goods .comparison-t-cell, .comparison-5-goods .comparison-t-head-cell {
+			        width: 209px
+			    }
+			}
+			
+			@media screen and (min-width: 1645px) and (max-width: 1920px) {
+			    .comparison-6-goods .comparison-t-container {
+			        width: 100%
+			    }
+			}
+			
+			@media screen and (min-width: 1921px) {
+			    .comparison-6-goods .comparison-t-container {
+			        width: 1825px
+			    }
+			}
+			
+			@media screen and (min-width: 1645px) {
+			    .comparison-6-goods .comparison-t, .comparison-6-goods .comparison-t-head {
+			        width: 100%
+			    }
+			
+			    .comparison-6-goods .comparison-t-cell, .comparison-6-goods .comparison-t-head-cell {
+			        width: -webkit-calc((100% - 295px) / 6);
+			        width: -moz-calc((100% - 295px) / 6);
+			        width: -o-calc((100% - 295px) / 6);
+			        width: calc((100% - 295px) / 6)
+			    }
+			
+			    .comparison-6-goods .comparison-t-cell, .comparison-6-goods .comparison-t-head-cell, .comparison-6-goods _::-webkit-:not(:root:root) {
+			        width: 209px
+			    }
+			}
+			
+			@media not all and (min-resolution: 0.001dpcm) {
+			    .comparison-6-goods .comparison-t-cell, .comparison-6-goods .comparison-t-head-cell {
+			        width: 209px
+			    }
+			}
+			
+			@media screen and (min-width: 1854px) and (max-width: 1920px) {
+			    .comparison-7-goods .comparison-t-container {
+			        width: 100%
+			    }
+			}
+			
+			@media screen and (min-width: 1921px) {
+			    .comparison-7-goods .comparison-t-container {
+			        width: 1825px
+			    }
+			}
+			
+			@media screen and (min-width: 1854px) {
+			    .comparison-7-goods .comparison-t, .comparison-7-goods .comparison-t-head {
+			        width: 100%
+			    }
+			
+			    .comparison-7-goods .comparison-t-cell, .comparison-7-goods .comparison-t-head-cell {
+			        width: -webkit-calc((100% - 295px) / 7);
+			        width: -moz-calc((100% - 295px) / 7);
+			        width: -o-calc((100% - 295px) / 7);
+			        width: calc((100% - 295px) / 7)
+			    }
+			
+			    .comparison-7-goods .comparison-t-cell, .comparison-7-goods .comparison-t-head-cell, .comparison-7-goods _::-webkit-:not(:root:root) {
+			        width: 209px
+			    }
+			}
+			
+			@media not all and (min-resolution: 0.001dpcm) {
+			    .comparison-7-goods .comparison-t-cell, .comparison-7-goods .comparison-t-head-cell {
+			        width: 209px
+			    }
+			}
+			
+			.comparison-chars-t {
+			    display: table;
+			    width: 100%;
+			    table-layout: fixed
+			}
+			
+			.comparison-chars-t-row {
+			    display: table-row
+			}
+			
+			.comparison-chars-img {
+			    display: table-cell;
+			    width: 28px;
+			    padding-right: 8px;
+			    text-align: center
+			}
+			
+			.comparison-chars-value {
+			    display: table-cell;
+			    font-size: .8125rem;
+			    line-height: 1.125rem;
+			    word-break: break-word
+			}
+			
+			.c-section {
+			    padding-bottom: 5em
+			}
+			
+			.c-section .btn-link-to-compare {
+			    margin-top: 1em
+			}
+			
+			.c-section .btn-link-to-compare .btn-link {
+			    line-height: 1em
+			}
+			
+			.c-section .btn-link-to-compare .btn-link-i {
+			    font-size: 1.30769em;
+			    padding: .6em .8em .7em;
+			    line-height: 1em
+			}
+			
+			.c-section-g-i {
+			    -webkit-box-sizing: border-box;
+			    box-sizing: border-box;
+			    float: left;
+			    width: 24.5%;
+			    height: 11.92308em;
+			    padding: .46154em 1em 1.84615em 0;
+			    margin: .46154em .38462em 0 0;
+			    border-bottom: 1px solid #eaeaea;
+			    border-right: 1px solid #eaeaea
+			}
+			
+			@media screen and (max-width: 1460px) {
+			    .c-section-g-i {
+			        width: 32.7%
+			    }
+			}
+			
+			@media screen and (max-width: 1065px) {
+			    .c-section-g-i {
+			        width: 49.2%
+			    }
+			}
+			
+			.c-section-g-i-delete {
+			    display: block;
+			    float: left;
+			    width: 25px;
+			    height: 25px;
+			    margin: 0 10px 0 5px
+			}
+			
+			.c-section-g-i-delete-icon {
+			    background-position: -181px -878px;
+			    width: 22px;
+			    height: 22px
+			}
+			
+			.c-section-g-i-delete:hover .c-section-g-i-delete-icon {
+			    background-position: -226px -878px;
+			    width: 22px;
+			    height: 22px
+			}
+			
+			.c-section-g-i-image {
+			    float: left;
+			    width: 80px;
+			    text-align: center;
+			    margin-right: 10px
+			}
+			
+			.c-section-g-i-info {
+			    margin-left: 140px;
+			    font-size: 12px;
+			    text-decoration: none;
+			    font-weight: 600;
+			}
+			
+			.g-i-status.available {color: #129205;}
+			
+			.g-i-status {
+			    color: #ccc;
+			}
+			
+			.comparison-share {
+			    display: inline-block;
+			    margin-left: 8px;
+			    text-align: center;
+			    vertical-align: middle
+			}
+			
+			.comparison-share-link {
+			    border: 1px solid #ccd4e0;
+			    border-radius: 17px;
+			    display: block;
+			    font-size: .84615em;
+			    line-height: 1.27273em;
+			    padding: .35294em .94118em;
+			    text-align: center
+			}
+			
+			.comparison-share-link:hover {
+			    border-color: #ff7878
+			}
+			
+			.comparison-share-link-popup {
+			    background: #fff;
+			    border: 1px solid #b9d5ef;
+			    box-shadow: 0 0 13px 0 rgba(0, 0, 0, .4);
+			    margin-top: .53846em;
+			    padding: .76923em .53846em;
+			    position: absolute;
+			    right: 0;
+			    z-index: 2;
+			    white-space: nowrap
+			}
+			
+			.comparison-share-link-popup-input {
+			    width: 24em
+			}
+			
+			.comparison-one-goods {
+			    width: 80%;
+			    max-width: 80em
+			}
+			
+			.comparison-one-goods-msg {
+			    margin-bottom: 1.66667em
+			}
+			
+			.comparison-one-goods .g-i-list {
+			    margin-bottom: .5em
+			}
+			
+			.comparison-one-goods .g-i-list-title {
+			    padding-top: .3em
+			}
+			
+			.comparison-one-goods .g-i-status {
+			    font-weight: 700;
+			    margin-bottom: .5em;
+			    font-size: 1em
+			}
+			
+			.comparison-one-goods .g-i-list-price {
+			    margin-bottom: .76923em
+			}
+			
+			@media screen and (max-width: 1279px) {
+			    .comparison-one-goods .g-i-list-right-part {
+			        width: 220px
+			    }
+			
+			    .comparison-one-goods .g-i-list-middle-part {
+			        margin-right: 235px
+			    }
+			}
+			
+			.goods-add-link {
+			    font-size: 1.30769em;
+			    margin: .52941em .41176em 0 0
+			}
+			
+			.comparison-merchant-reliable-seller {
+			    letter-spacing: -.33em
+			}
+			
+			.comparison-merchant-reliable-seller .comparison-g-i-merchant-link, .comparison-merchant-reliable-seller .comparison-g-i-merchant-name, .comparison-merchant-reliable-seller .safe-merchant-label-title {
+			    display: inline;
+			    padding-right: 25px;
+			    letter-spacing: normal
+			}
+			
+			.comparison-merchant-reliable-seller .safe-merchant-label-title {
+			    margin-right: 0
+			}
+			
+			.comparison-merchant-reliable-seller .safe-merchant-label-icon {
+			    margin-left: -20px
+			}
+			
+			.comparison-g-i-merchant-logo {
+			    width: 120px;
+			    height: 40px
+			}
+			
+			.comparison-g-i-merchant-logo img {
+			    position: absolute;
+			    top: 0;
+			    bottom: 0;
+			    left: 0;
+			    right: 0;
+			    margin: auto 0
+			}
+			
+			.comparison-g-i-merchant-link, .comparison-g-i-merchant-name {
+			    display: inline-block;
+			    padding-left: 1.46154em
+			}
+			
+			.comparison-g-i-merchant-link:before, .comparison-g-i-merchant-name:before {
+			    background-position: -775.93px -508px;
+			    width: 13px;
+			    height: 15px;
+			    left: 0
+			}
+			
+			.comparison-g-i-merchant-name {
+			    line-height: 1.23077em
+			}
+			
+			.comparison-g-i-merchant-name:before {
+			    top: -1px
+			}
+			
+			.comparison-g-i-merchant-link {
+			    line-height: 1.38462em
+			}
+			
+			.comparison-g-i-merchant-link:before {
+			    top: 1px
+			}
+			
+			.comparison-g-i-merchant-link:hover:before {
+			    background-position: -775.93px -491px;
+			    width: 13px;
+			    height: 15px
+			}
+			
+			.content-notice {
+			    padding-top: 2em;
+			    border-top: 1px solid #eaeaea
+			}
+			
+		");
+	}
+
+	/**
+	 * Setting the toolbar
+	 */
+	protected function addToolBar()
+	{
+		// adding the joomla toolbar to the front
+		JLoader::register('JToolbarHelper', JPATH_ADMINISTRATOR.'/includes/toolbar.php');
+		
+		// set help url for this view if found
+		$help_url = Vm_product_comparisonsHelper::getHelpUrl('comparison');
+		if (Vm_product_comparisonsHelper::checkString($help_url))
+		{
+			JToolbarHelper::help('COM_VM_PRODUCT_COMPARISONS_HELP_MANAGER', false, $help_url);
+		}
+		// now initiate the toolbar
+		$this->toolbar = JToolbar::getInstance();
+	}
+
+	/**
+	 * Escapes a value for output in a view script.
+	 *
+	 * @param   mixed  $var  The output to escape.
+	 *
+	 * @return  mixed  The escaped value.
+	 */
+	public function escape($var, $sorten = false, $length = 40)
+	{
+		// use the helper htmlEscape method instead.
+		return Vm_product_comparisonsHelper::htmlEscape($var, $this->_charset, $sorten, $length);
+	}
+}

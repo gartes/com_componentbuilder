@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fields name="smartphone">
+        <field name="width" type="text" label="Smartphone Width" default="360" />
+        <field name="height" type="text" label="Smartphone Height"  default="640"/>
+
+    </fields>
+
+
+    <fields name="tablet" >
+        <field name="width" type="text" label="Tablet Width" default="1024"/>
+        <field name="height" type="text" label="Tablet Height" default="1366"/>
+    </fields>
+
+    <fields name="desktop" >
+        <field name="width" type="text" label="Desktop Width" default="1920"/>
+        <field name="height" type="text" label="Desktop Height" default="1080"/>
+    </fields>
+</form>
