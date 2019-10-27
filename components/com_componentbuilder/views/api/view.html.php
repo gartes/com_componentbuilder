@@ -49,6 +49,7 @@ class ComponentbuilderViewApi extends JViewLegacy
 
 	/**
 	 * Prepares the document
+	 * @since 3.9
 	 */
 	protected function _prepareDocument()
 	{
