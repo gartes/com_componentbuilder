@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="9c1e4d8c-f529-47c2-b93d-f29ea85be11d" name="com_componentbuilder" url="http://localhost">
+        <fileTransfer port="0" mountedRoot="/var/www/nobd.ml" accessType="MOUNT" />
+      </webServer>
+    </option>
+  </component>
+</project>

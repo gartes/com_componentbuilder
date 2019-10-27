@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Componentbuilder View class for the Api
+ * @since 3.9
  */
 class ComponentbuilderViewApi extends JViewLegacy
 {
