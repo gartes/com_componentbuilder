@@ -57,9 +57,10 @@ class Compiler extends Infusion
 	protected $backupPath = false;
 	protected $repoPath = false;
 	protected $addCustomCodeAt = array();
-
+	
 	/**
 	 * Constructor
+	 * @throws Exception
 	 */
 	public function __construct($config = array())
 	{

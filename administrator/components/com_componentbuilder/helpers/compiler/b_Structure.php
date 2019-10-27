@@ -457,13 +457,16 @@ class Structure extends Get
 					// set main class file
 					$fileDetails = array('path' => $plugin->folder_path . '/' . $plugin->file_name . '.php',
 						'name' => $plugin->file_name . '.php', 'zip' => $plugin->file_name . '.php');
+					
 					$this->writeFile($fileDetails['path'],
 						'<?php' . PHP_EOL . '// Plugin main class template' .
 						PHP_EOL . $this->hhh . 'BOM' . $this->hhh . PHP_EOL .
 						PHP_EOL . '// No direct access to this file' . PHP_EOL .
 						"defined('_JEXEC') or die('Restricted access');" . PHP_EOL .
 						$this->hhh . 'MAINCLASS' . $this->hhh);
+					
 					$this->newFiles[$plugin->key][] = $fileDetails;
+					
 					// count the file created
 					$this->fileCount++;
 					// set main xml file

@@ -28,6 +28,7 @@ class Infusion extends Interpretation
 
 	/**
 	 * Constructor
+	 * @since 3.9
 	 */
 	public function __construct($config = array())
 	{
@@ -45,7 +46,7 @@ class Infusion extends Interpretation
 	 * 
 	 * @param   int   $nr  The line number
 	 * 
-	 * @return  void
+	 * @return string
 	 * 
 	 */
 	private function setLine($nr)
@@ -736,9 +737,27 @@ class Infusion extends Interpretation
 			// UNINSTALL
 			$this->fileContentStatic[$this->hhh . 'UNINSTALL' . $this->hhh] = $this->setUninstall();
 
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			// UPDATE_VERSION_MYSQL
 			$this->setVersionController();
 
+			
+			
+			
+			
+			
+			
+			
+			
 			// only set these if default dashboard it used
 			if (!ComponentbuilderHelper::checkString($this->dynamicDashboard))
 			{
@@ -1083,6 +1102,9 @@ class Infusion extends Interpretation
 			// Trigger Event: jcb_ce_onAfterBuildFilesContent
 			$this->triggerEvent('jcb_ce_onAfterBuildFilesContent', array(&$this->componentContext, &$this->componentData, &$this->fileContentStatic, &$this->fileContentDynamic, &$this->placeholders, &$this->hhh));
 
+			# TODO Точка остановки компилятора
+//			die(__FILE__ .' Lines '. __LINE__ );
+			
 			return true;
 		}
 		return false;

@@ -2261,6 +2261,8 @@ abstract class ComponentbuilderHelper
 		// get the zip adapter
 		$zip = JArchive::getAdapter('zip');
 
+		
+		
 		//create the zip file
 		if ($zip->create($filepath, $zipArray))
 		{
@@ -3184,6 +3186,7 @@ abstract class ComponentbuilderHelper
 
 
 	/**
+	 * Получить данные между двемя значениями
 	* get between
 	* 
 	* @param  string          $content    The content to search
@@ -3192,7 +3195,7 @@ abstract class ComponentbuilderHelper
 	* @param  string          $default     The default value if none found
 	*
 	* @return  string          On success / empty string on failure 
-	* 
+	* @since 3.9
 	*/
 	public static function getBetween($content, $start, $end, $default = '')
 	{
@@ -3987,10 +3990,11 @@ abstract class ComponentbuilderHelper
 		// return default as fail safe
 		return array('1' => '!', '3' => 'E', '4' => 'A');	
 	}
-
+	
 	/**
-	* Close public protocol
-	*/
+	 * Close public protocol
+	 * @since 3.9
+	 */
 	public static function closePublicProtocol($id, $public)
 	{
 		// get secret salt
@@ -4014,10 +4018,11 @@ abstract class ComponentbuilderHelper
 		// return closed values
 		return $close;
 	}
-
+	
 	/**
-	* Open public protocol
-	*/
+	 * Open public protocol
+	 * @since 3.9
+	 */
 	public static function openPublicProtocol($SECRET, $ID, $PUBLIC)
 	{
 		// get secret salt
@@ -4039,35 +4044,39 @@ abstract class ComponentbuilderHelper
 		// return opened values
 		return $open;
 	}
-
+	
 	/**
-	* 	Workers to load tasks
-	*
-	*	@var array 
-	*/
+	 *    Workers to load tasks
+	 *
+	 * @since 3.9
+	 * @var array
+	 */
 	protected static $worker = array();
-
+	
 	/**
-	*	Set a worker dynamic URLs
-	*
-	* 	@var array 
-	*/
-	protected static $workerURL = array();	
-
+	 *    Set a worker dynamic URLs
+	 *
+	 * @since 3.9
+	 * @var array
+	 */
+	protected static $workerURL = array();
+	
 	/**
-	*	Set a worker dynamic HEADERs
-	*
-	* 	@var array 
-	*/
+	 *    Set a worker dynamic HEADERs
+	 *
+	 * @since 3.9
+	 * @var array
+	 */
 	protected static $workerHEADER = array();
-
+	
 	/**
-	* 	Curl Error Notice
-	*
-	*	@var bool 
-	*/
+	 *    Curl Error Notice
+	 *
+	 * @since 3.9
+	 * @var bool
+	 */
 	protected static $curlErrorLoaded = false;
-
+	
 	/**
 	* 	check if a worker has more work
 	* 
@@ -4352,17 +4361,17 @@ abstract class ComponentbuilderHelper
 			
 			$fileName = 'joomla-upd.ga/'. $fileName ;
 			
-			$ARR = [
-				'joomla-upd.ga/updserver_virtuemartproductcomparisons.xml' ,
-				'joomla-upd.ga/com_virtuemart_product_comparisons__J3.zip' ,
-				'joomla-upd.ga/plg_vmextended_vm_copmare_v1_0_1__J3.zip' ,
-			];
-			if( !in_array($fileName , $ARR )  )
-			{
-				echo'<pre>';print_r( $localPath );echo'</pre>'.__FILE__.' '.__LINE__;
-				echo'<pre>';print_r( $fileName );echo'</pre>'.__FILE__.' '.__LINE__;
-//				die(__FILE__ .' Lines '. __LINE__ );
-			}#END IF
+//			$ARR = [
+//				'joomla-upd.ga/updserver_virtuemartproductcomparisons.xml' ,
+//				'joomla-upd.ga/com_virtuemart_product_comparisons__J3.zip' ,
+//				'joomla-upd.ga/plg_vmextended_vm_copmare_v1_0_1__J3.zip' ,
+//			];
+//			if( !in_array($fileName , $ARR )  )
+//			{
+//				echo'<pre>';print_r( $localPath );echo'</pre>'.__FILE__.' '.__LINE__;
+//				echo'<pre>';print_r( $fileName );echo'</pre>'.__FILE__.' '.__LINE__;
+////				die(__FILE__ .' Lines '. __LINE__ );
+//			}#END IF
 			
 			
 			
@@ -4679,10 +4688,10 @@ abstract class ComponentbuilderHelper
 				
 				extract($options);
 				
-				echo'<pre>';print_r( $options );echo'</pre>'.__FILE__.' '.__LINE__;
-				echo'<pre>';print_r( $host );echo'</pre>'.__FILE__.' '.__LINE__;
-				echo'<pre>';print_r( $username );echo'</pre>'.__FILE__.' '.__LINE__;
-				echo'<pre>';print_r( $password );echo'</pre>'.__FILE__.' '.__LINE__;
+//				echo'<pre>';print_r( $options );echo'</pre>'.__FILE__.' '.__LINE__;
+//				echo'<pre>';print_r( $host );echo'</pre>'.__FILE__.' '.__LINE__;
+//				echo'<pre>';print_r( $username );echo'</pre>'.__FILE__.' '.__LINE__;
+//				echo'<pre>';print_r( $password );echo'</pre>'.__FILE__.' '.__LINE__;
 //
 //				echo'<pre>';print_r( $server );echo'</pre>'.__FILE__.' '.__LINE__;
 //				echo'<pre>';print_r( $server );echo'</pre>'.__FILE__.' '.__LINE__;

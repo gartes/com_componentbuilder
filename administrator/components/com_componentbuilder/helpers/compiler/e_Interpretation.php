@@ -801,7 +801,11 @@ class Interpretation extends Fields
 	 */
 	public function setVersionController()
 	{
-		if (ComponentbuilderHelper::checkArray($this->componentData->version_update) || ComponentbuilderHelper::checkArray($this->updateSQLBuilder))
+		
+		
+		
+		
+		if (ComponentbuilderHelper::checkArray($this->componentData->version_update) || ComponentbuilderHelper::checkArray( $this->updateSQLBuilder ) )
 		{
 			$updateXML = array();
 			// add the update server
@@ -814,13 +818,8 @@ class Interpretation extends Fields
 			$addDynamicSQL = true;
 			$addActive = true;
 			
-			echo'<pre>';print_r( $this->componentData->version_update );echo'</pre>'.__FILE__.' '.__LINE__;
-			
 			if (ComponentbuilderHelper::checkArray($this->componentData->version_update))
 			{
-			
-//				echo'<pre>';print_r( $this->componentData->version_update );echo'</pre>'.__FILE__.' '.__LINE__;
-				die(__FILE__ .' Lines '. __LINE__ );
 				foreach ($this->componentData->version_update as $nr => &$update)
 				{
 					$this->setUpdateXMLSQL($update, $updateXML, $addDynamicSQL);
@@ -831,8 +830,6 @@ class Interpretation extends Fields
 					}
 				}
 			}
-			
-			echo'<pre>';print_r(  );echo'</pre>'.__FILE__.' '.__LINE__;
 			
 			
 			// add the dynamic sql if not already added
@@ -862,14 +859,11 @@ class Interpretation extends Fields
 				$this->buildDynamique($target, 'update_server');
 				$this->fileContentDynamic[$name][$this->hhh . 'UPDATE_SERVER_XML' . $this->hhh] = implode(PHP_EOL, $updateXML);
 
-				echo'<pre>';print_r( $updateXML );echo'</pre>'.__FILE__.' '.__LINE__;
+//				echo'<pre>';print_r( $updateXML );echo'</pre>'.__FILE__.' '.__LINE__;
 				
 				// set the Update server file name
 				$this->updateServerFileName = $name;
 			}
-			
-			echo'<pre>';print_r( $this->fileContentDynamic );echo'</pre>'.__FILE__.' '.__LINE__;
-			die(__FILE__ .' Lines '. __LINE__ );
 		}
 		// add the update server link to component XML
 		if ($this->componentData->add_update_server && isset($this->componentData->update_server_url) && ComponentbuilderHelper::checkString($this->componentData->update_server_url))
@@ -16003,8 +15997,11 @@ function vdm_dkim() {
 			ksort($this->componentGlobal, SORT_STRING);
 			// add global to the compnent section
 			$component .= PHP_EOL . implode(PHP_EOL, $this->componentGlobal) . PHP_EOL . $this->_t(1) . "</section>";
+			
+			
 			// add views to the compnent section
 			$component .= PHP_EOL . implode(PHP_EOL, $componentViews);
+			
 			// be sure to reset again. (memory)
 			$this->componentHead = null;
 			$this->componentGlobal = null;

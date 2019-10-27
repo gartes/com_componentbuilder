@@ -1714,6 +1714,11 @@ class Get
 			// the default is to ignore the repo folder
 			$component->toignore = array('.git');
 		}
+		
+		
+		
+		
+		
 		// get all plugins
 		$component->addjoomla_plugins = (isset($component->addjoomla_plugins) && ComponentbuilderHelper::checkJson($component->addjoomla_plugins)) ? json_decode($component->addjoomla_plugins, true) : null;
 		if (ComponentbuilderHelper::checkArray($component->addjoomla_plugins))
@@ -1723,7 +1728,16 @@ class Get
 			}, array_values($component->addjoomla_plugins));
 		}
 		unset($component->addjoomla_plugins);
-
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 //		echo'<pre>';print_r( $component );echo'</pre>'.__FILE__.' '.__LINE__;
 		
@@ -6330,6 +6344,7 @@ class Get
 				$plugin->file_name = strtolower($plugin->code_name);
 				// set official_name lang strings
 				$this->setLangContent($plugin->key, $this->langPrefix, $plugin->official_name);
+				
 				// set some placeholder for this plugin
 				$this->placeholders[$this->bbb . 'Plugin_name' . $this->ddd] = $plugin->official_name;
 				$this->placeholders[$this->bbb . 'Plugin' . $this->ddd] = ucfirst($plugin->code_name);
@@ -6338,6 +6353,7 @@ class Get
 				$this->placeholders[$this->bbb . 'plugin_group' . $this->ddd] = strtolower($plugin->group);
 				$this->placeholders[$this->bbb . 'plugin.version' . $this->ddd] = $plugin->plugin_version;
 				$this->placeholders[$this->bbb . 'plugin_version' . $this->ddd] = str_replace('.', '_', $plugin->plugin_version);
+				
 				
 				// set description (TODO) add description field to plugin
 				if (!isset($plugin->description) || !ComponentbuilderHelper::checkString($plugin->description))
@@ -6367,6 +6383,7 @@ class Get
 					unset($plugin->readme);
 				}
 				
+				
 				// open some base64 strings
 				if (!empty($plugin->main_class_code))
 				{
@@ -6379,9 +6396,11 @@ class Get
 						);
 				}
 				
+				
 				// set the head :)
 				if ($plugin->add_head == 1 && !empty($plugin->head))
 				{
+					
 					// set GUI mapper field
 					$guiMapper['field'] = 'head';
 					// base64 Decode head.
@@ -6403,6 +6422,8 @@ class Get
 						);
 				}
 				unset($plugin->class_head);
+				
+				
 				
 				// set the comment
 				if (!empty($plugin->comment))
@@ -6502,6 +6523,7 @@ class Get
 								// return field
 								return $field;
 							}, array_values($form['fields']));
+							
 							// check if field is external form file
 							if (!isset($form['plugin']) || $form['plugin'] != 1)
 							{
@@ -6559,6 +6581,7 @@ class Get
 					}
 				}
 				unset($plugin->fields);
+				
 				
 				// set the add targets
 				$addArray = array('files' => 'files', 'folders' => 'folders', 'urls' => 'urls', 'filesfullpath' => 'files', 'foldersfullpath' => 'folders');
@@ -6619,6 +6642,7 @@ class Get
 					unset($plugin->sql);
 					$plugin->add_sql = 0;
 				}
+				
 				// add_sql_uninstall
 				if ($plugin->add_sql_uninstall == 1 && ComponentbuilderHelper::checkString($plugin->sql_uninstall))
 				{ 
@@ -6629,6 +6653,7 @@ class Get
 					unset($plugin->sql_uninstall);
 					$plugin->add_sql_uninstall = 0;
 				}
+				
 				// update the URL of the update_server if set
 				if ($plugin->add_update_server == 1 && ComponentbuilderHelper::checkString($plugin->update_server_url))
 				{
@@ -6657,8 +6682,16 @@ class Get
 						$plugin->{$server . '_protocol'} = 0;
 					}
 				}
+				
+				
+				
+				
+				
 				# установить сервер обновлений
 				# set the update server stuff (TODO)
+				
+				
+				
 				
 				// update_server_xml_path
 				// update_server_xml_file_name
@@ -6679,13 +6712,20 @@ class Get
 				unset($this->placeholders[$this->bbb . 'plugin.version' . $this->ddd]);
 				unset($this->placeholders[$this->bbb . 'plugin_version' . $this->ddd]);
 
-				echo'<pre>';print_r( $plugin );echo'</pre>'.__FILE__.' '.__LINE__;
+//				echo'<pre>';print_r( $plugin->version_update );echo'</pre>'.__FILE__.' '.__LINE__;
+//				echo'<pre>';print_r( $plugin );echo'</pre>'.__FILE__.' '.__LINE__;
 //				die(__FILE__ .' Lines '. __LINE__ );
 				
 				
 				
+				
 				$this->joomlaPlugins[$id] = $plugin;
-
+				
+				
+				
+				
+				
+				
 				return true;
 			}
 		}
