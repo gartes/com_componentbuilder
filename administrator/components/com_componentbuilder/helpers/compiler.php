@@ -72,6 +72,13 @@ class Compiler extends Infusion
 			// set temp directory
 			$comConfig = JFactory::getConfig();
 			$this->tempPath = $comConfig->get('tmp_path');
+			
+			
+			
+//			echo'<pre>';print_r( $config );echo'</pre>'.__FILE__.' '.__LINE__;
+//			die(__FILE__ .' '. __LINE__ );
+			
+			
 			// set some folder paths in relation to distribution
 			if ($config['backup'])
 			{
@@ -423,7 +430,7 @@ class Compiler extends Infusion
 				
 				
 				
-				echo'<pre>';print_r( $plugin->update_server_xml_path );echo'</pre>'.__FILE__.' '.__LINE__;
+				
 				echo'<pre>';print_r( $plugin );echo'</pre>'.__FILE__.' '.__LINE__;
 //				die(__FILE__ .' Lines '. __LINE__ );
 				
@@ -630,8 +637,12 @@ class Compiler extends Infusion
 
 	private function zipComponent()
 	{
+		
+		
+		
 		// Component Folder Name
 		$this->filepath['component-folder'] = $this->componentFolderName;
+		
 		
 		
 		
@@ -641,9 +652,15 @@ class Compiler extends Infusion
 		// Trigger Event: jcb_ce_onBeforeZipComponent
 		$this->triggerEvent('jcb_ce_onBeforeZipComponent', array(&$this->componentContext, &$this->componentPath, &$this->filepath['component'], &$this->tempPath, &$this->componentFolderName, &$this->componentData));
 		
+		
+		
+
 		//create the zip file
 		if (ComponentbuilderHelper::zip($this->componentPath, $this->filepath['component']))
 		{
+			
+			
+			
 			// now move to backup if zip was made and backup is required
 			if ($this->backupPath && $this->dynamicIntegration)
 			{
@@ -652,7 +669,15 @@ class Compiler extends Infusion
 				// copy the zip to backup path
 				JFile::copy($this->filepath['component'], $this->backupPath . '/' . $this->componentBackupName . '.zip');
 			}
-
+			
+//
+//			echo'<pre>';print_r( $this->dynamicIntegration  );echo'</pre>'.__FILE__.' '.__LINE__;
+//			echo'<pre>';print_r($this->backupPath  );echo'</pre>'.__FILE__.' '.__LINE__;
+//			echo'<pre>';print_r($this->componentPath  );echo'</pre>'.__FILE__.' '.__LINE__;
+//			echo'<pre>';print_r( $this->filepath['component']  );echo'</pre>'.__FILE__.' '.__LINE__;
+//			die(__FILE__ .' '. __LINE__ );
+//
+			
 			// move to sales server host
 			if ($this->componentData->add_sales_server == 1 && $this->dynamicIntegration)
 			{

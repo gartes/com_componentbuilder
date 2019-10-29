@@ -4966,7 +4966,7 @@ class Interpretation extends Fields
 			$script .= PHP_EOL . $this->_t(3) . 'echo \'<a target="_blank" href="' . $this->fileContentStatic[$this->hhh . 'AUTHORWEBSITE' . $this->hhh] . '" title="' . $this->fileContentStatic[$this->hhh . 'Component_name' . $this->hhh] . '">';
 			$script .= PHP_EOL . $this->_t(4) . '<img src="components/com_' . $this->componentCodeName . '/assets/images/vdm-component.' . $this->componentImageType . '"/>';
 			$script .= PHP_EOL . $this->_t(4) . '</a>';
-			$script .= PHP_EOL . $this->_t(4) . "<h3>Upgrade to Version " . $this->fileContentStatic[$this->hhh . 'ACTUALVERSION' . $this->hhh] . " Was Successful! Let us know if anything is not working as expected.</h3>';";
+			$script .= PHP_EOL . $this->_t(4) . "<h3>Обновлено до версии " . $this->fileContentStatic[$this->hhh . 'ACTUALVERSION' . $this->hhh] . " Дайте нам знать, если что-то не работает, как ожидалось.</h3>';";
 		}
 
 		if (ComponentbuilderHelper::checkString($script))
@@ -7586,6 +7586,11 @@ class Interpretation extends Fields
 			// now build the dynamic tabs
 			foreach ($tabBucket as $tabCodeName => $positions)
 			{
+				
+				//echo'<pre>';print_r( $positions );echo'</pre>'.__FILE__.' '.__LINE__;
+				
+				
+				
 				// get lang string
 				$tabLangName = $positions['lang'];
 				// build main center position

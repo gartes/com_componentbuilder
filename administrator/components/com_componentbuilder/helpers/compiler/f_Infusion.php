@@ -323,7 +323,10 @@ class Infusion extends Interpretation
 
 					// EDITBODY <<<DYNAMIC>>>
 					$this->fileContentDynamic[$viewName_single][$this->hhh . 'EDITBODY' . $this->hhh] = $this->setEditBody($view);
-
+					
+					
+					
+					
 					// EDITBODY <<<DYNAMIC>>>
 					$this->fileContentDynamic[$viewName_single][$this->hhh . 'EDITBODYFADEIN' . $this->hhh] = $this->setFadeInEfect($view);
 
