@@ -935,6 +935,9 @@ class Structure extends Get
 	 */
 	public function writeFile($path, $data)
 	{
+		
+		
+		
 		return ComponentbuilderHelper::writeFile($path, $data);
 	}
 

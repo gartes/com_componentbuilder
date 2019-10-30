@@ -90,6 +90,7 @@ class Compiler extends Infusion
 			{
 				$this->repoPath = $this->params->get('git_folder_path', null);
 			}
+			
 			// remove site folder if not needed (
 			//TODO add check if custom script was moved to site folder then we must do a more complex cleanup here
 			//)
@@ -120,8 +121,13 @@ class Compiler extends Infusion
 			// set the lang data now
 			$this->setLangFileData();
 			
+			
+//			echo'<pre>';print_r( $this->langNot );echo'</pre>'.__FILE__.' '.__LINE__;
+//			echo'<pre>';print_r( $this->langSet );echo'</pre>'.__FILE__.' '.__LINE__;
+//			die(__FILE__ .' '. __LINE__ );
+			
 			// set the language notice if it was set
-			if (ComponentbuilderHelper::checkArray($this->langNot) || ComponentbuilderHelper::checkArray($this->langSet))
+			if (ComponentbuilderHelper::checkArray($this->langNot) || ComponentbuilderHelper::checkArray( $this->langSet ))
 			{
 				if (ComponentbuilderHelper::checkArray($this->langNot))
 				{
@@ -131,13 +137,13 @@ class Compiler extends Infusion
 						$this->app->enqueueMessage(JText::sprintf('The <b>%s</b> language has %s&#37; translated, you will need to translate %s&#37; of the language strings before it will be added.', $tag, $percentage, $this->percentageLanguageAdd), 'Warning');
 					}
 					$this->app->enqueueMessage(JText::_('<hr /><h3>Language Notice</h3>'), 'Notice');
-					$this->app->enqueueMessage(JText::sprintf('<b>You can change this percentage of translated strings required in the global options of JCB.</b><br />Please watch this <a href=%s>tutorial for more help surrounding the JCB translations manager</a>.', '"https://youtu.be/zzAcVkn_cWU?list=PLQRGFI8XZ_wtGvPQZWBfDzzlERLQgpMRE" target="_blank" title="JCB Tutorial surrounding Translation Manager"'), 'Notice');
+					$this->app->enqueueMessage(JText::sprintf('<b>Вы можете изменить этот процент переведенных строк, требуемый в глобальных опциях JCB.</b><br />Please watch this <a href=%s>tutorial for more help surrounding the JCB translations manager</a>.', '"https://youtu.be/zzAcVkn_cWU?list=PLQRGFI8XZ_wtGvPQZWBfDzzlERLQgpMRE" target="_blank" title="JCB Tutorial surrounding Translation Manager"'), 'Notice');
 				}
 				// set why the strings were added
 				$whyAddedLang = JText::sprintf('because more then %s&#37; of the strings have been translated.', $this->percentageLanguageAdd);
 				if ($this->debugLinenr)
 				{
-					$whyAddedLang = JText::_('because the debugging mode is on. (debug line numbers)');
+					$whyAddedLang = JText::_('because the debugging mode is on. (Отладка номеров строк)');
 				}
 				// show languages that were added
 				if (ComponentbuilderHelper::checkArray($this->langSet))

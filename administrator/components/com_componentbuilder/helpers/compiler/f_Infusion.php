@@ -1199,6 +1199,9 @@ class Infusion extends Interpretation
 	{
 		$values = array();
 		$mainLangLoader = array();
+		
+		
+		
 		// check the admin lang is set
 		if ($this->setLangAdmin())
 		{
@@ -1235,8 +1238,13 @@ class Infusion extends Interpretation
 		// now we insert the values into the files
 		if (ComponentbuilderHelper::checkArray($this->languages))
 		{
+			
+			
+			
 			// Trigger Event: jcb_ce_onBeforeBuildAllLangFiles
 			$this->triggerEvent('jcb_ce_onBeforeBuildAllLangFiles', array(&$this->componentContext, &$this->languages, &$this->langTag));
+			
+			
 			// rest xml array
 			$langXML = array();
 			foreach ($this->languages as $tag => $areas)
@@ -1245,6 +1253,10 @@ class Infusion extends Interpretation
 				$tag = trim($tag);
 				foreach ($areas as $area => $languageStrings)
 				{
+					
+				
+//
+					
 					// only log messages for none $this->langTag translations
 					if ($this->langTag !== $tag)
 					{
@@ -1252,9 +1264,15 @@ class Infusion extends Interpretation
 						$langStringSum = ComponentbuilderHelper::bcmath('mul', $langStringNr, 100);
 						$percentage = ComponentbuilderHelper::bcmath('div', $langStringSum, $mainLangLoader[$area]);
 						$stringNAme = ($langStringNr == 1) ? '(string ' . $tag . ' translated)' : '(strings ' . $tag . ' translated)';
+						
+						
+						# принудительная загрузка языковых файлов, если включино отладка строк
 						// force load if debug lines are added
 						if (!$this->debugLinenr)
 						{
+							
+							# проверьте, стоит ли устанавливать этот перевод от количества переыеденных строк
+							# Устанавливается в настройках компонента - процент переведенных строк
 							// check if we sould install this translation
 							if ($percentage < $this->percentageLanguageAdd)
 							{
@@ -1269,6 +1287,9 @@ class Infusion extends Interpretation
 					// set naming convention
 					$p = 'admin';
 					$t = '';
+					
+					echo'<pre>';print_r( $area );echo'</pre>'.__FILE__.' '.__LINE__;
+					
 					if (strpos($area, 'site') !== false)
 					{
 						if ($this->removeSiteFolder  && $this->removeSiteEditFolder)
@@ -1281,8 +1302,15 @@ class Infusion extends Interpretation
 					{
 						$t = '.sys';
 					}
+					
+					
+					
 					// build the path to to place the lang file
 					$path = $this->componentPath . '/' . $p . '/language/' . $tag;
+					
+					
+					echo'<pre>';print_r( $path );echo'</pre>'.__FILE__.' '.__LINE__;
+					
 					if (!JFolder::exists($path))
 					{
 						JFolder::create($path);

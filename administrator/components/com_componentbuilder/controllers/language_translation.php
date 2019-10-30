@@ -252,6 +252,9 @@ class ComponentbuilderControllerLanguage_translation extends JControllerForm
 		$this->ref = $this->input->get('ref', 0, 'word');
 		$this->refid = $this->input->get('refid', 0, 'int');
 
+		
+		
+		
 		// Check if there is a return value
 		$return = $this->input->get('return', null, 'base64');
 		$canReturn = (!is_null($return) && JUri::isInternal(base64_decode($return)));
