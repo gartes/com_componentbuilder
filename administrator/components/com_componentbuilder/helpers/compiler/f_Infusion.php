@@ -33,9 +33,10 @@ class Infusion extends Interpretation
 	public function __construct($config = array())
 	{
 		// first we run the perent constructor
+		# /administrator/components/com_componentbuilder/helpers/compiler/e_Interpretation.php
 		if (parent::__construct($config))
 		{
-			// infuse the data into the structure
+			// влить данные в структуру
 			return $this->buildFileContent();
 		}
 		return false;
@@ -57,13 +58,15 @@ class Infusion extends Interpretation
 		}
 		return '';
 	}
-
+	
 	/**
+	 * Сборка контента для структуры
 	 * Build the content for the structure
-	 * 
+	 *
 	 *
 	 * @return  boolean  on success
-	 * 
+	 * @throws Exception
+	 * @since 3.9
 	 */
 	protected function buildFileContent()
 	{
@@ -153,8 +156,13 @@ class Infusion extends Interpretation
 
 			// start loading the category tree scripts
 			$this->fileContentStatic[$this->hhh . 'CATEGORY_CLASS_TREES' . $this->hhh] = '';
+			
+			
+			
 			// run the field sets for first time
 			$this->setConfigFieldsets(1);
+			
+			
 			$this->lang = $keepLang;
 
 			// ADMINJS
@@ -200,7 +208,9 @@ class Infusion extends Interpretation
 			{
 				$this->fileContentStatic[$this->hhh . 'EXSTRA_ADMIN_FILES' . $this->hhh] .= PHP_EOL . $this->_t(3) . "<filename>README.txt</filename>";
 			}
-
+			
+			
+			
 			// HELPER_CREATEUSER
 			$this->fileContentStatic[$this->hhh . 'HELPER_CREATEUSER' . $this->hhh] = $this->setCreateUserHelperMethod($this->componentData->creatuserhelper);
 
@@ -216,7 +226,9 @@ class Infusion extends Interpretation
 
 			// add the helper emailer if set
 			$this->fileContentStatic[$this->hhh . 'HELPER_EMAIL' . $this->hhh] = $this->addEmailHelper();
-
+			
+			
+			# загрузить глобальные заполнители
 			// load the global placeholders
 			if (ComponentbuilderHelper::checkArray($this->globalPlaceholders))
 			{
@@ -226,6 +238,7 @@ class Infusion extends Interpretation
 				}
 			}
 
+			
 			// reset view array
 			$viewarray = array();
 			$site_edit_view_array = array();

@@ -163,6 +163,7 @@ class ComponentbuilderModelCompiler extends JModelList
 		$set['placeholders'] = $addPlaceholders;
 		$set['debuglinenr'] = $debugLinenr;
 		$set['minify'] = $minify;
+		
 		// run compiler
 		$this->compiler = new Compiler($set);
 		if($this->compiler)

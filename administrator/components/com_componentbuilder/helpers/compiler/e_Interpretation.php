@@ -4931,6 +4931,9 @@ class Interpretation extends Fields
 			$script .= PHP_EOL . $this->_t(3) . "\$query = \$db->getQuery(true);";
 			$script .= PHP_EOL . $this->_t(3) . "//" . $this->setLine(__LINE__) . " Field to update.";
 			$script .= PHP_EOL . $this->_t(3) . "\$fields = array(";
+			
+			
+			
 			$script .= PHP_EOL . $this->_t(4) . "\$db->quoteName('params') . ' = ' . \$db->quote('{" . implode(',', $this->extensionsParams) . "}'),";
 			$script .= PHP_EOL . $this->_t(3) . ");";
 			$script .= PHP_EOL . $this->_t(3) . "//" . $this->setLine(__LINE__) . " Condition.";
@@ -7546,6 +7549,10 @@ class Interpretation extends Fields
 	 */
 	public function setEditBody(&$view)
 	{
+		
+//		echo'<pre>';print_r( $view );echo'</pre>'.__FILE__.' '.__LINE__;
+		
+		
 		// set view name
 		$view_name_single = ComponentbuilderHelper::safeString($view['settings']->name_single);
 		// main lang prefix
@@ -7587,8 +7594,14 @@ class Interpretation extends Fields
 			foreach ($tabBucket as $tabCodeName => $positions)
 			{
 				
-				//echo'<pre>';print_r( $positions );echo'</pre>'.__FILE__.' '.__LINE__;
-				
+				/**
+				 * предупреждение, если одно поле и положение над вкладками
+				 * warning - if one field and position above tabs
+				 */
+				if( !isset( $positions['lang'] ) )
+				{
+					$positions['lang']= 'COM_PRO_CRITICAL_CSS_FILE_SETTING_TAB' ;
+				}#END IF
 				
 				
 				// get lang string
@@ -7597,6 +7610,9 @@ class Interpretation extends Fields
 				$main = '';
 				$mainbottom = '';
 				$this->setEditBodyTabMainCenterPositionDiv($main, $mainbottom, $positions);
+				
+				
+				
 				// set acctive tab (must be in side foreach loop to get active tab code name)
 				if ($tabCounter == 0)
 				{
@@ -7644,6 +7660,9 @@ class Interpretation extends Fields
 				// add the main
 				$body .= PHP_EOL . $this->_t(2) . '<div class="row-fluid form-horizontal-desktop">';
 				$body .= $main;
+				
+				
+				
 				$body .= PHP_EOL . $this->_t(2) . "</div>";
 				// add main body bottom div if needed
 				if (strlen($mainbottom) > 0)
@@ -14047,7 +14066,20 @@ class Interpretation extends Fields
 				// set the custom table key
 				$dbkey = 'g';
 				// Trigger Event: jcb_ce_onBeforeSetConfigFieldsets
-				$this->triggerEvent('jcb_ce_onBeforeSetConfigFieldsets', array(&$this->componentContext, &$timer, &$this->configFieldSets, &$this->configFieldSetsCustomField, &$this->componentData->config, &$this->extensionsParams, &$placeholders));
+				$this->triggerEvent('jcb_ce_onBeforeSetConfigFieldsets',
+					array(
+						&$this->componentContext,
+						&$timer,
+						&$this->configFieldSets,
+						&$this->configFieldSetsCustomField,
+						&$this->componentData->config,
+						&$this->extensionsParams,
+						&$placeholders
+					)
+				);
+				
+				
+				
 				// build the config fields
 				foreach ($this->componentData->config as $field)
 				{
@@ -14059,6 +14091,9 @@ class Interpretation extends Fields
 					}
 					else
 					{
+						
+						echo'<pre>';print_r( $this->extensionsParams );echo'</pre>'.__FILE__.' '.__LINE__;
+						
 						// simpleXMLElement class
 						$newxmlField = $this->setDynamicField($field, $view, $viewType, $lang, $viewName, $listViewName, $placeholders, $dbkey, false);
 						if (isset($newxmlField->fieldXML))
@@ -14067,41 +14102,82 @@ class Interpretation extends Fields
 							$xmlField = PHP_EOL . $this->_t(1) . "<!--" . $this->setLine(__LINE__) . " " . $newxmlField->comment . ' -->' . PHP_EOL . $this->_t(1) . $this->xmlPrettyPrint($xmlField, 'field');
 						}
 					}
+					
+					
+					
 					// make sure the xml is set and a string
 					if (isset($xmlField) && ComponentbuilderHelper::checkString($xmlField))
 					{
+						
+						
+						
+						
+						
 						$this->configFieldSetsCustomField[$field['tabname']][] = $xmlField;
+						
+						
+						
+						
+						
 						// set global params to db on install
 						$fieldName = ComponentbuilderHelper::safeString($this->setPlaceholders(ComponentbuilderHelper::getBetween($xmlField, 'name="', '"'), $placeholders));
 						$fieldDefault = $this->setPlaceholders(ComponentbuilderHelper::getBetween($xmlField, 'default="', '"'), $placeholders);
+						
+						
+						
+						
+						
+						
 						if (isset($field['custom_value']) && ComponentbuilderHelper::checkString($field['custom_value']))
 						{
+							
+							/*echo'<pre>';print_r( strpos($field['custom_value'], '{"') !== false );echo'</pre>'.__FILE__.' '.__LINE__;
+							echo'<pre>';print_r( strpos($field['custom_value'], '}') !== false );echo'</pre>'.__FILE__.' '.__LINE__;
+							echo'<pre>';print_r( $field['custom_value'] );echo'</pre>'.__FILE__.' '.__LINE__;*/
 							// add array if found
 							if ((strpos($field['custom_value'], '["') !== false) && (strpos($field['custom_value'], '"]') !== false))
 							{
 								// load the Global checkin defautls
 								$this->extensionsParams[] = '"' . $fieldName . '":' . $field['custom_value'];
 							}
+							# TODO Переделать проверку на Json
+							else if((strpos($field['custom_value'], '{"') !== false) && (strpos($field['custom_value'], '}') !== false)){
+								
+								$this->extensionsParams[] = '"' . $fieldName . '":' . $field['custom_value'];
+							}
 							else
 							{
+								
+								
 								// load the Global checkin defautls
 								$this->extensionsParams[] = '"' . $fieldName . '":"' . $field['custom_value'] . '"';
 							}
 						}
 						elseif (ComponentbuilderHelper::checkString($fieldDefault))
 						{
+							
+							
 							// load the Global checkin defautls
 							$this->extensionsParams[] = '"' . $fieldName . '":"' . $fieldDefault . '"';
 						}
+						
+						
 					}
 				}
 			}
+			
+			/*echo'<pre>';print_r( $this->extensionsParams );echo'</pre>'.__FILE__.' '.__LINE__;
+			die(__FILE__ .' '. __LINE__ );*/
+			
 			// first run we must set the globals
 			$this->setGlobalConfigFieldsets($lang, $autorName, $autorEmail);
 			$this->setSiteControlConfigFieldsets($lang);
+			
 		}
 		elseif (2 == $timer) // this is after the admin views are build
 		{
+			
+			
 			// Trigger Event: jcb_ce_onBeforeSetConfigFieldsets
 			$this->triggerEvent('jcb_ce_onBeforeSetConfigFieldsets', array(&$this->componentContext, &$timer, &$this->configFieldSets, &$this->configFieldSetsCustomField, &$this->componentData->config, &$this->extensionsParams, &$this->placeholders));
 			// these field sets can only be added after admin view is build
@@ -14118,6 +14194,11 @@ class Interpretation extends Fields
 		$this->triggerEvent('jcb_ce_onAfterSetConfigFieldsets', array(&$this->componentContext, &$timer, &$this->configFieldSets, &$this->configFieldSetsCustomField, &$this->extensionsParams, &$this->frontEndParams, &$this->placeholders));
 	}
 
+	
+	
+	
+	
+	
 	public function setSiteControlConfigFieldsets($lang)
 	{
 		$front_end = array();
@@ -15800,9 +15881,14 @@ function vdm_dkim() {
 
 		// set the menu controller lookup
 		$menuControllers = array('access', 'submenu', 'dashboard_list', 'dashboard_add');
+		
+		# установить права доступа для custom admin views
 		// set the custom admin views permissions
 		if (isset($this->componentData->custom_admin_views) && ComponentbuilderHelper::checkArray($this->componentData->custom_admin_views))
 		{
+			
+			
+			
 			foreach ($this->componentData->custom_admin_views as $custom_admin_view)
 			{
 				// new custom permissions to access this view
@@ -15845,6 +15931,7 @@ function vdm_dkim() {
 				$this->buildPermissions($custom_admin_view, $customAdminCode, $customAdminCode, $menuControllers, 'customAdmin');
 			}
 		}
+		
 		// set the site views permissions
 		if (isset($this->componentData->site_views) && ComponentbuilderHelper::checkArray($this->componentData->site_views))
 		{
@@ -15873,6 +15960,8 @@ function vdm_dkim() {
 				$this->addCustomButtonPermissions($site_view['settings'], $siteName, $siteCode);
 			}
 		}
+		
+		
 		if (isset($this->componentData->admin_views) && ComponentbuilderHelper::checkArray($this->componentData->admin_views))
 		{
 			foreach ($this->componentData->admin_views as $view)
@@ -15880,6 +15969,8 @@ function vdm_dkim() {
 				// set view name
 				$nameView = ComponentbuilderHelper::safeString($view['settings']->name_single);
 				$nameViews = ComponentbuilderHelper::safeString($view['settings']->name_list);
+				
+				
 				// add custom tab permissions if found
 				if (isset($this->customTabs[$nameView]) && ComponentbuilderHelper::checkArray($this->customTabs[$nameView]))
 				{
@@ -15982,8 +16073,13 @@ function vdm_dkim() {
 
 			// Trigger Event: jcb_ce_onAfterBuildAccessSections
 			$this->triggerEvent('jcb_ce_onAfterBuildAccessSections', array(&$this->componentContext, $this));
-
+			
+			
+			$componentViews = [] ;
+			
+			
 			// set the views permissions now
+			#set the views permissions now
 			if (ComponentbuilderHelper::checkArray($this->permissionViews))
 			{
 				foreach ($this->permissionViews as $viewName => $actions)
@@ -15996,6 +16092,10 @@ function vdm_dkim() {
 					$componentViews[] = $this->_t(1) . "</section>";
 				}
 			}
+			
+			
+			
+			
 			/// now build the section
 			$component = implode(PHP_EOL, $this->componentHead);
 			// sort the array to insure easy search

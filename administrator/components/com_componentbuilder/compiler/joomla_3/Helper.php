@@ -227,7 +227,8 @@ abstract class ###Component###Helper
 		return false;
 	}
 
-	public static function jsonToString($value, $sperator = ", ", $table = null, $id = 'id', $name = 'name')
+    
+    public static function jsonToString($value, $sperator = ", ", $table = null, $id = 'id', $name = 'name')
 	{
 		// do some table foot work
 		$external = false;
@@ -874,6 +875,7 @@ abstract class ###Component###Helper
 	* @input	string   The json string to check
 	*
 	* @returns bool true on success
+    * @since 3.9
 	**/
 	public static function checkJson($string)
 	{
@@ -891,6 +893,7 @@ abstract class ###Component###Helper
 	* @input	object   The object to check
 	*
 	* @returns bool true on success
+    * @since 3.9
 	**/
 	public static function checkObject($object)
 	{
@@ -907,6 +910,7 @@ abstract class ###Component###Helper
 	* @input	array   The array to check
 	*
 	* @returns bool/int  number of items in array on success
+    * @since 3.9
 	**/
 	public static function checkArray($array, $removeEmptyString = false)
 	{
@@ -935,6 +939,7 @@ abstract class ###Component###Helper
 	* @input	string   The string to check
 	*
 	* @returns bool true on success
+    * @since 3.9
 	**/
 	public static function checkString($string)
 	{
@@ -950,6 +955,7 @@ abstract class ###Component###Helper
 	* Thanks https://stackoverflow.com/a/4860432/1429677
 	*
 	* @returns bool true on success
+    * @since 3.9
 	**/
 	public static function isConnected()
 	{
@@ -976,6 +982,7 @@ abstract class ###Component###Helper
 	* @input	array   The arrays you would like to merge
 	*
 	* @returns array on success
+    * @since 3.9
 	**/
 	public static function mergeArrays($arrays)
 	{
@@ -1000,15 +1007,34 @@ abstract class ###Component###Helper
 		return self::shorten($string, $length, $addTip);
 	}
 
-	/**
-	* Shorten a string
-	*
-	* @input	string   The you would like to shorten
-	*
-	* @returns string on success
-	**/
+    /**
+    * Укоротить строку
+    * Shorten a string
+    *
+    * @input    string   The you would like to shorten
+    *
+    * @returns string on success
+    * @since    3.9
+    **/
 	public static function shorten($string, $length = 40, $addTip = true)
 	{
+
+        // Пытаться получить из настроек компонента
+        $app             = JFactory::getApplication();
+        $view            = $app->input->get( 'view' , false );
+        $params          = JComponentHelper::getParams( 'com_pro_critical' );
+        $shorten_setting = $params->get( 'shorten_setting' , [] );
+        if( count( (array)$shorten_setting ) )
+        {
+            foreach( $shorten_setting as $item )
+            {
+                if( $item->view_component == mb_strtolower( $view ) )
+                {
+                    $length = $item->length;
+                }//END IF
+            }//END FOREACH
+        }//END IF
+
 		if (self::checkString($string))
 		{
 			$initial = strlen($string);
@@ -1144,7 +1170,7 @@ abstract class ###Component###Helper
 		// not a string
 		return '';
 	}
-
+ 
 	public static function htmlEscape($var, $charset = 'UTF-8', $shorten = false, $length = 40)
 	{
 		if (self::checkString($var))
@@ -1153,9 +1179,9 @@ abstract class ###Component###Helper
 			$string = $filter->clean(html_entity_decode(htmlentities($var, ENT_COMPAT, $charset)), 'HTML');
 			if ($shorten)
 			{
-                                return self::shorten($string,$length);
+                return self::shorten($string,$length);
 			}
-			return $string;
+			return $string; 
 		}
 		else
 		{

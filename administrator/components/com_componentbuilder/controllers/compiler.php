@@ -62,6 +62,9 @@ defined('_JEXEC') or die('Restricted access');
 				// include component compiler
 				require_once JPATH_ADMINISTRATOR . '/components/com_componentbuilder/helpers/compiler.php';
 				$model = $this->getModel( 'compiler' );
+				
+				
+				
 				if( $model->builder( $version , $componentId , $addBackup , $addRepo , $addPlaceholders , $debugLinenr , $minify ) )
 				{
 					$cache = JFactory::getCache( 'mod_menu' );
@@ -73,9 +76,16 @@ defined('_JEXEC') or die('Restricted access');
 					return false;
 				}
 				
+				
+				
+				
+				
 				$app          = JFactory::getApplication();
 				$redirect_url = $app->getUserState( 'com_componentbuilder.redirect_url' );
 				$message      = $app->getUserState( 'com_componentbuilder.message' );
+				
+				
+				
 				if( empty( $redirect_url ) && $componentId > 0 )
 				{
 					$redirect_url = JRoute::_( 'index.php?option=com_componentbuilder&view=compiler' , false );

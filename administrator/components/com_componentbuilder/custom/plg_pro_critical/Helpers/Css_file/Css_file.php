@@ -14,6 +14,7 @@
 	use JLoader;
 	use JModelLegacy;
 	use Exception;
+	use JDate;
 	
 	class Css_file
 	{
@@ -64,16 +65,13 @@
 		
 		public function getFileList(){
 			
-			//
+			
 			$app = JFactory::getApplication() ; 
 			
 			$body                = $app->getBody();
 			
 			# Найти все Style элементы в теле страницы
-			$dom = new \Plg\Pro_critical\Platform\Dom();
-			
-			
-			
+			$dom = new \GNZ11\Document\Dom();
 			$dom->loadHTML( $body );
 			$xpath       = new \DOMXPath( $dom );
 			$Nodes = $xpath->query( '//link[@rel="stylesheet"]|//style');
@@ -82,15 +80,17 @@
 			{
 				switch ($node->tagName){
 					case 'link':
-						#Получить атрибуты
-//						$excludeAttr=[ 'type' , 'rel'];
-						$excludeAttr=['rel'];
-						$attr = $dom::getAttrElement( $node , $excludeAttr ) ;
+						$attr = $dom::getAttrElement( $node , ['rel'] ) ;
 						$hrefArr = explode('?' , $attr['href'] ) ;
+						unset($attr['href']) ;
+						
 						$href = $hrefArr[0] ;
 						$link[$href] = [] ;
-						
 						$link[$href]['file'] = $href ;
+						$link[$href] = array_merge($link[$href] , $attr ) ;
+						
+						
+						
 						if( isset($hrefArr[1]) )
 						{
 							$paramHrefArr = explode('&' , $hrefArr[1]) ;
@@ -107,27 +107,37 @@
 							$link[$href]['params_query'] = json_encode($link[$href]['params_query']) ;
 						}#END IF
 						
+						
+						
 						break ;
-					
-						
 					case 'style' :
-						
+						break ;
 				}
-				
-//				echo'<pre>';print_r( $node );echo'</pre>'.__FILE__.' '.__LINE__;
 			}#END FOREACH
 			
-			 
+			
+			
+			
+			$app->input->set('limit' , 0 );
 			$Css_file_list = $this->Css_file_list->getItems();
+			
+			
+			$UbdateCssFile = [] ;
+			$copyLink = [] ;
 			foreach( $Css_file_list as $item )
 			{
-				
-				echo'<pre>';print_r( $item->file );echo'</pre>'.__FILE__.' '.__LINE__;
+				if( isset( $link[$item->file] ) ) {
+					unset( $link[$item->file] ) ;
+				}else{
+					
+				}#END IF
 			}#END FOREACH
 			
+			$this->addNewLink($link);
 			
-			echo'<pre>';print_r( $link );echo'</pre>'.__FILE__.' '.__LINE__;
 			
+			
+//			 die(__FILE__ .' '. __LINE__ );
 			
 			
 			
@@ -138,7 +148,92 @@
 //			die(__FILE__ .' Lines '. __LINE__ );
 		}
 		
+		private function addNewLink($link){
+			if( !count($link) )
+			{
+				return true ;
+			}#END IF
+			$db = JFactory::getDbo();
+			
+			$query = $db->getQuery(true) ;
+			$columns = [ 'load' , 'file' , 'params_query' , 'type' , 'media' ];
+			$jdata  = new JDate();
+			$now   = $jdata->toSql();
+			$userId = JFactory::getUser()->id;
+			
+			
+			$columns[] = 'created_by';
+			$columns[] = 'created';
+			
+			
+			
+			foreach ( $link as $item )
+			{
+				$values =
+					$db->quote( 1 ) . ","
+					. $db->quote( $item[ 'file' ] ) . ","
+					. $db->quote( $item[ 'params_query' ] ) . ","
+					. $db->quote( 'text/css' ) . ","
+					. $db->quote( (isset($item[ 'media' ])?$item[ 'media' ]:'') ) . ","
+					
+					. $db->quote( $userId ) . ","
+					. $db->quote( $now );
+				
+				$query->values( $values );
+			}//foreach
+			
+			$query->insert( $db->quoteName( '#__pro_critical_css_file' ) )->columns( $db->quoteName( $columns ) );
+			$db->setQuery( $query );
+//			echo $query->dump();
+//			die(__FILE__ .' '. __LINE__ );
+					try
+							{
+								// Code that may throw an Exception or Error.
+								$db->execute();
+							}
+							catch (Exception $e)
+							{
+							   // Executed only in PHP 5, will not be reached in PHP 7
+							   echo 'Выброшено исключение: ',  $e->getMessage(), "\n";
+							}
+							catch (Throwable $e)
+							{
+								// Executed only in PHP 7, will not match in PHP 5
+								echo 'Выброшено исключение: ',  $e->getMessage(), "\n";
+								echo'<pre>';print_r( $e );echo'</pre>'.__FILE__.' '.__LINE__;
+								die(__FILE__ .' '. __LINE__ );
+							}
+			
+			return true ;
+		}
 		
 		
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

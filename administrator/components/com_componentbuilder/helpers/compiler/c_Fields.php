@@ -1538,10 +1538,15 @@ class Fields extends Structure
 			// set the subform fields (it is a repeatable without the modal) 
 			elseif ($typeName === 'subform')
 			{
+				
+				
 				// now add to the field set
 				$field .= PHP_EOL . $this->_t(2) . $taber . "<!--" . $this->setLine(__LINE__) . " " . ucfirst($name) . " Field. Type: " . ComponentbuilderHelper::safeString($typeName, 'F') . ". (joomla) -->";
 				$field .= PHP_EOL . $this->_t(2) . $taber . "<field";
 				$fieldsSet = array();
+				
+				
+				
 				foreach ($fieldAttributes as $property => $value)
 				{
 					if ($property != 'fields')
@@ -1551,16 +1556,24 @@ class Fields extends Structure
 				}
 				$field .= ">";
 				$field .= PHP_EOL . $this->_t(3) . $taber . '<form hidden="true" name="list_' . $fieldAttributes['name'] . '_modal" repeat="true">';
-				if (strpos($fieldAttributes['fields'], ',') !== false)
+				
+				
+				$fieldsSets = [] ;
+				if( isset( $fieldAttributes['fields'] ) )
 				{
-					// mulitpal fields
-					$fieldsSets = (array) explode(',', $fieldAttributes['fields']);
-				}
-				elseif (is_numeric($fieldAttributes['fields']))
-				{
-					// single field
-					$fieldsSets[] = (int) $fieldAttributes['fields'];
-				}
+					if ( strpos($fieldAttributes['fields'], ',') !== false)
+					{
+						// mulitpal fields
+						$fieldsSets = (array) explode(',', $fieldAttributes['fields']);
+					}
+					elseif (is_numeric($fieldAttributes['fields']))
+					{
+						// single field
+						$fieldsSets[] = (int) $fieldAttributes['fields'];
+					}
+				}#END IF
+				
+				
 				// only continue if we have a field set
 				if (ComponentbuilderHelper::checkArray($fieldsSets))
 				{
@@ -1696,6 +1709,7 @@ class Fields extends Structure
 	 * @param   array    $custom            Used when field is from config
 	 *
 	 * @return  SimpleXMLElement The field in xml
+	 * @since 3.9
 	 *
 	 */
 	protected function simpleXMLSetField($setType, &$fieldAttributes, &$name, &$typeName, &$langView, &$view_name_single, &$view_name_list, $placeholders, &$optionArray, $custom = null)
@@ -2025,6 +2039,8 @@ class Fields extends Structure
 						$field->fieldXML->addAttribute($property, $value);
 					}
 				}
+				
+				
 				// if we detect formsource we do not add the form
 				if (isset($fieldAttributes['formsource']) && ComponentbuilderHelper::checkString($fieldAttributes['formsource']))
 				{

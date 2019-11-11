@@ -66,7 +66,9 @@ class Compiler extends Infusion
 	{
 		// to check the compiler speed
 		$this->time_start = microtime(true);
-		// first we run the perent constructors
+		
+		// Сначала мы запускаем родительские конструкторы
+		# /administrator/components/com_componentbuilder/helpers/compiler/f_Infusion.php
 		if (parent::__construct($config))
 		{
 			// set temp directory
@@ -74,7 +76,7 @@ class Compiler extends Infusion
 			$this->tempPath = $comConfig->get('tmp_path');
 			
 			
-			
+//			phpinfo();
 //			echo'<pre>';print_r( $config );echo'</pre>'.__FILE__.' '.__LINE__;
 //			die(__FILE__ .' '. __LINE__ );
 			
@@ -151,7 +153,7 @@ class Compiler extends Infusion
 					$this->app->enqueueMessage(JText::_('<hr /><h3>Language Notice</h3>'), 'Notice');
 					foreach ($this->langSet as $tag => $percentage)
 					{
-						$this->app->enqueueMessage(JText::sprintf('The <b>%s</b> language has %s&#37; translated. Was addeded %s', $tag, $percentage, $whyAddedLang), 'Notice');
+						$this->app->enqueueMessage(JText::sprintf('Представление <b>%s</b> имеет %s&#37; переводимых констант. Был добавлен %s', $tag, $percentage, $whyAddedLang), 'Notice');
 					}
 				}
 			}
